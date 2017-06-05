@@ -1,0 +1,145 @@
+﻿@model PortalSlubny.Models.Company
+
+@{
+    ViewBag.Title = "Edytuj firmę";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Scripts.Render("~/bundles/jquery")
+
+<script type="text/javascript" src="~/Scripts/tinymce/tinymce.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        document.getElementById("uploadBtn").onchange = function () {
+            document.getElementById("logoFileName").innerHTML = this.value;
+        };
+
+        document.getElementById("logoFileName").innerHTML = '@ViewBag.LogoFileName';
+
+        tinymce.init({
+            selector: "textarea",
+            encoding: "xml",
+        });
+    });
+
+</script>
+
+<div class="container-fluid white-section">
+    <div class="container">
+        <h2 class="section-title">@ViewBag.Title</h2>
+        <hr />
+
+        <div class="row">
+
+            @using (Html.BeginForm("EditCompany", "Company", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-md-offset-2 col-md-8">
+                        <div class="form-horizontal">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.Id)
+                            @Html.HiddenFor(model => model.CreationDate)
+                            @Html.HiddenFor(model => model.Grade)
+                            @Html.HiddenFor(model => model.GradeCount)
+                            @Html.HiddenFor(model => model.Owner.UserName)
+                            @Html.Hidden("InitialName", Model.Name)
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Name, new { @class = "control-label input-lg col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control input-lg" })
+                                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Logo, new { @class = "control-label input-lg col-md-3" })<br />
+                                <div class="col-md-9" style="margin-top:-25px;">
+                                    <div class="fileUpload btn btn-primary btn-lg">
+                                        <span>Przeglądaj</span>
+                                        <input type="file" name="logo" class="upload" id="uploadBtn" />
+                                    </div>
+                                    <span id="logoFileName" style="font-size:20px;">Wybierz plik</span>
+                                    @Html.HiddenFor(m => m.Logo, new { id = "hiddenLogo" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.CategoryId, new { @class = "control-label input-lg col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.DropDownListFor(m => m.CategoryId, ViewBag.Categories as SelectList, new { @class = "form-control input-lg" })
+                                    @Html.ValidationMessageFor(m => m.CategoryId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Place, new { @class = "control-label input-lg col-md-3" })
+                                <div class="col-md-9">
+
+                                    @Html.DropDownListFor(m => m.Place, ViewBag.Cities as SelectList, new { @class = "form-control input-lg" })
+                                    @Html.ValidationMessageFor(m => m.Place, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Phone1, new { @class = "control-label input-lg col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.TextBoxFor(m => m.Phone1, new { @class = "form-control input-lg" })
+                                    @Html.ValidationMessageFor(m => m.Phone1, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Phone2, new { @class = "control-label input-lg col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.TextBoxFor(m => m.Phone2, new { @class = "form-control input-lg" })
+                                    @Html.ValidationMessageFor(m => m.Phone2, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Email, new { @class = "control-label input-lg col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control input-lg" })
+                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.WWW, new { @class = "control-label input-lg col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.TextBoxFor(m => m.WWW, new { @class = "form-control input-lg" })
+                                    @Html.ValidationMessageFor(m => m.WWW, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Describtion, new { @class = "control-label input-lg col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.TextAreaFor(m => m.Describtion, new { @class = "form-control input-lg", placeholder = "Opis firmy" })
+                                    @Html.ValidationMessageFor(m => m.Describtion, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="form-group">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-9">
+                                    <input type="submit" value="Zapisz" class="btn btn-success btn-lg" style="width:100%;" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

@@ -1,0 +1,10 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string redirectAction = ViewBag.RedirectAction;
+    string redirectControler = ViewBag.RedirectControler;
+}
+
+<h3>@ViewBag.ErrorMessage</h3>
+@Html.ActionLink("Powrót",redirectAction, redirectControler)

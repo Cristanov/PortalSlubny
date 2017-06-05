@@ -1,0 +1,272 @@
+﻿@using PortalSlubny.Models;
+@model PortalSlubny.ViewModels.HomeIndexViewModel
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+@Scripts.Render("~/bundles/jquery")
+
+<script type="text/javascript" src="~/Scripts/fillImage/fillImage.js"></script>
+<link rel="stylesheet" href="~/Scripts/fillImage/fillImage.css" />
+<script type="text/javascript" src="~/Scripts/Tools.js"></script>
+
+<div class="container-fluid white-section" id="recommended">
+    <div class="container">
+        <section>
+            <h1 class="section-title">POLECANE</h1>
+            <hr />
+            <div class="row">
+                <div class="recomm-element col-md-3 col-sm-3">
+                    <div class="circle"><img src="~/Images/wedding_rings.png" /></div>
+                    <h2>Some header</h2>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                </div>
+                <div class="recomm-element col-md-3 col-sm-3">
+                    <div class="circle" style="background-color:#446CB3;"><img src="~/Images/wedding_cake.png" /></div>
+                    <h2>Some header</h2>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                </div>
+                <div class="recomm-element col-md-3 col-sm-3">
+                    <div class="circle" style="background-color:#2ECC71;"><img src="~/Images/wedding_photo.png" /></div>
+                    <h2>Some header</h2>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                </div>
+                <div class="recomm-element col-md-3 col-sm-3">
+                    <div class="circle" style="background-color:#EB9532;"><img src="~/Images/car.png" /></div>
+                    <h2>Some header</h2>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+</div>
+
+<div class="container-fluid blue-section" id="aboutUs">
+    <div class="container">
+        <section>
+            <h1 class="section-title">O nas</h1>
+            <hr />
+            <div class="row">
+                <div class="col-sm-6 aboutUs-box">
+                    <div class="col-sm-4">
+                        <img src="~/Images/bukiet.jpg" class="aboutUs-img thumbnail" />
+                    </div>
+                    <div class="col-sm-8">
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                    </div>
+                </div>
+                <div class="col-sm-6 aboutUs-box">
+                    <div class="col-sm-4">
+                        <img src="~/Images/bukiet.jpg" class="aboutUs-img thumbnail" />
+                    </div>
+                    <div class="col-sm-8">
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+</div>
+
+<div class="container-fluid white-section" id="companyBase">
+    <div class="container">
+        <section>
+            <h1 class="section-title">BAZA FIRM</h1>
+            <hr />
+            <div class="row">
+
+                <div class="col-md-5" id="companiesTagsContainer">
+                    <ul class="tags">
+                        @foreach (var category in Model.Categories)
+                        {
+                            <li><a href="@Url.Action("Index", "Company", new { Categories = @category.Id})">@category.Name</a></li>
+                        }
+                    </ul>
+                    <div class="cl"></div>
+                </div>
+
+                <div class="col-md-3" id="companySearchDiv">
+                    @using (Html.BeginForm("Index", "Company"))
+                    {
+                        <div class="form-group">
+                            @Html.Label("Company", "Szukaj Firmy")
+                            @Html.TextBox("search", null, new { @class = "form-control", placeholder = "Wpisz coś..." })
+                            <button type="submit" class="btn btn-success btn-block">Szukaj</button>
+                        </div>
+                    }
+                    <div class="form-group">
+                        @Html.Label("", "Jeżeli masz firmę i jeszcze nie dodałeś jej do naszej bazy, skorzystaj z poniższego przycisku")
+
+                        @Html.ActionLink("Dodaj swoją firmę", "Add", "Company", null, new { @class = "btn btn-warning btn-block" })
+                    </div>
+                </div>
+
+                @* Ostatnio dodane firmy *@
+                @if (Model.LastCompanies.Count > 0)
+                {
+                    <div class="col-md-4" id="lastAddedCompaniesColumn">
+                        <h3>Ostatnio dodane firmy</h3>
+                        <div id="lastAddedCompaniesSliderContainer">
+                            <div id="lastAddedCompanies">
+                                @foreach (Company company in Model.LastCompanies)
+                                {
+                                    <div class="lastAddedCompany">
+                                        <a href="@Url.Action("ShowCompany", "Company", new { id=company.Id })">
+                                            <div class="lastAddedImgContainer">
+                                                <img src="@company.Logo" class="lastAddedCompanyImg" />
+                                            </div>
+                                            <p>@company.Name</p>
+                                        </a>
+                                    </div>
+                                }
+                                <div class="clear"></div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+
+        </section>
+    </div>
+
+</div>
+
+<div class="container-fluid blue-section" id="articles">
+    <div class="container">
+        <section>
+            <h1 class="section-title">ARTYKUŁY</h1>
+            <hr />
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <div class="news">
+                        <img src="~/Images/images (1).jpg" class="article-image img-responsive" />
+                        <p class="news-title">Some article title</p>
+                    </div>
+                </div>
+                <div class="news col-md-3 col-sm-6">
+                    <img src="~/Images/images.jpg" class="article-image img-responsive" />
+                    <p class="news-title">Some article title 2</p>
+
+                </div>
+                <div class="news col-md-3 col-sm-6">
+                    <img src="~/Images/gn_stock_bride.jpg" class="article-image img-responsive" />
+                    <p class="news-title">Some article title 3 Some article asd sadf sdf sd </p>
+
+                </div>
+                <div class="news col-md-3 col-sm-6">
+                    <img src="~/Images/bukiet.jpg" class="article-image img-responsive" />
+                    <p class="news-title">Some article title 3 Some article asd sadf sdf sd </p>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="news col-md-3 col-sm-6">
+                    <img src="~/Images/bukiet.jpg" class="article-image img-responsive" />
+                    <p class="news-title">Some article title 3 Some article asd sadf sdf sd </p>
+
+                </div>
+                <div class="news col-md-3 col-sm-6">
+                    <img src="~/Images/gn_stock_bride.jpg" class="article-image img-responsive" />
+                    <p class="news-title">Some article title 3 Some article asd sadf sdf sd </p>
+
+                </div>
+                <div class="news col-md-3 col-sm-6">
+                    <img src="~/Images/images.jpg" class="article-image img-responsive" />
+                    <p class="news-title">Some article title 2</p>
+
+                </div>
+
+                <div class="news col-md-3 col-sm-6">
+                    <img src="~/Images/images (1).jpg" class="article-image img-responsive" />
+                    <p class="news-title">Some article title</p>
+                </div>
+
+            </div>
+        </section>
+    </div>
+</div>
+
+<div class="container-fluid white-section" id="contact">
+    <div class="container">
+        <h1 class="section-title">KONTAKT</h1>
+        <hr />
+        <div class="row">
+            <div class="col-md-5 col-sm-5">
+                <div class="row">
+                    <address>
+                        Góralski Ślub s.c<br />
+                        Zakopane 34-500<br />
+                        <br />
+                        NIP 123 12 12 123<br />
+                        REGON 123123123<br />
+                    </address>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-6 col-sm-6">
+                        <address>
+                            <p class="contact-name">Marzena</p><br />
+                            <img src="~/Images/user_female.png" /><br />
+                            Tel: 123 123 123 <br />
+                            E-mail: marz@ka.goralski.pl<br />
+                        </address>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <address>
+                            <p class="contact-name">Marcin</p><br />
+                            <img src="~/Images/user_male.png" /><br />
+                            Tel: 123 123 123 <br />
+                            E-mail: mar@cin.goralski.pl<br />
+                        </address>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7 col-sm-7">
+                <div class="row">
+
+                    @using (Html.BeginForm("SendMessage", "Home", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <p>Prześlij nam wiadomość</p>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Email.UserName, "Imię")
+                                @Html.TextBoxFor(m => m.Email.UserName, null, new { @class = "form-control", placeholder = "Imię" })
+                                @Html.ValidationMessageFor(m => m.Email.UserName, "", new { @class = "text-danger" })
+
+
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Email.From, "E-mail")
+                                @Html.TextBoxFor(m => m.Email.From, null, new { @class = "form-control", placeholder = "E-mail" })
+                                @Html.ValidationMessageFor(m => m.Email.From, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Email.Subject, "Temat")
+                                @Html.TextBoxFor(m => m.Email.Subject, null, new { @class = "form-control", placeholder = "Temat" })
+                                @Html.ValidationMessageFor(m => m.Email.Subject, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Email.Text, "Treść")
+                                @Html.TextAreaFor(m => m.Email.Text, new { @class = "form-control", placeholder = "Treść", rows = 8 })
+                                @Html.ValidationMessageFor(m => m.Email.Text, "", new { @class = "text-danger" })
+                            </div>
+                            <input type="submit" class="btn btn-success btn-block" value="Wyślij" />
+
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

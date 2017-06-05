@@ -1,0 +1,160 @@
+﻿@using PortalSlubny.Models
+@model Company
+@{
+    ViewBag.Title = "Add";
+}
+
+@Scripts.Render("~/bundles/jquery")
+
+<script type="text/javascript" src="~/Scripts/tinymce/tinymce.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        document.getElementById("uploadBtn").onchange = function () {
+            document.getElementById("logoFileName").innerHTML = this.value;
+        };
+
+        document.getElementById("logoFileName").innerHTML = '@ViewBag.LogoFileName';
+
+        tinymce.init({
+            selector: "textarea",
+            encoding: "xml",
+        });
+    });
+
+</script>
+
+<div class="container-fluid white-section" id="add-your-company">
+    <div class="container">
+        @if (!Request.IsAuthenticated)
+        {
+            <h2>Zaloguj się lub zarejestruj</h2>
+            <p>Aby dodać firmę do naszej bazy musisz posiadać konto użytkownika. Zaloguj się jeśli już masz konto lub zarejestruj nowe.</p>
+            <div class="row">
+                <div class="col-md-4 col-md-offset-2 col-sm-4 col-sm-offset-2">
+                    <h4>Logowanie</h4>
+                    @Html.Partial("_LoginFormPartial")
+
+                </div>
+                <div class="col-md-4 col-sm-4">
+                    <h4>Rejestracja</h4>
+                    @Html.Partial("_RegisterFormPartial")
+                </div>
+            </div>
+        }
+        else
+        {
+            <h2 class="section-title">Dodaj swoją firmę</h2>
+
+            <hr />
+            using (Html.BeginForm("Add", "Company", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="row">
+                    <div class="col-md-offset-2 col-md-8">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Name, new { @class = "control-label input-lg col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(m => m.Name, "Name", new { @class = "form-control input-lg", placeholder = "Nazwa" })
+                                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Logo, new { @class = "control-label input-lg col-md-3" })<br />
+                            <div class="col-md-9" style="margin-top:-25px;">
+                                <div class="fileUpload btn btn-primary btn-lg">
+                                    <span>Przeglądaj</span>
+                                    <input type="file" name="logo" class="upload" id="uploadBtn" />
+                                </div>
+                                <span id="logoFileName" style="font-size:20px;">Wybierz plik</span>
+                                @Html.HiddenFor(m => m.Logo, new { id = "hiddenLogo" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.CategoryId, new { @class = "control-label input-lg col-md-3" })
+                            <div class="col-md-9">
+                                @Html.DropDownListFor(m => m.CategoryId, ViewBag.Categories as SelectList, "Wybierz kategorie", new { @class = "form-control input-lg" })
+                                @Html.ValidationMessageFor(m => m.CategoryId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Place, new { @class = "control-label input-lg col-md-3" })
+                            <div class="col-md-9">
+
+                                @Html.DropDownListFor(m => m.Place, ViewBag.Cities as SelectList, "Wybierz miejscowość", new { @class = "form-control input-lg" })
+                                @Html.ValidationMessageFor(m => m.Place, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Phone1, new { @class = "control-label input-lg col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(m => m.Phone1, "Phone1", new { @class = "form-control input-lg", placeholder = "Telefon 1" })
+                                @Html.ValidationMessageFor(m => m.Phone1, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Phone2, new { @class = "control-label input-lg col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(m => m.Phone2, "Phone2", new { @class = "form-control input-lg", placeholder = "Telefon 2" })
+                                @Html.ValidationMessageFor(m => m.Phone2, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Email, new { @class = "control-label input-lg col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(m => m.Email, "Email", new { @class = "form-control input-lg", placeholder = "Email" })
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.WWW, new { @class = "control-label input-lg col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextBoxFor(m => m.WWW, "WWW", new { @class = "form-control input-lg", placeholder = "Strona WWW" })
+                                @Html.ValidationMessageFor(m => m.WWW, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Describtion, new { @class = "control-label input-lg col-md-3" })
+                            <div class="col-md-9">
+                                @Html.TextAreaFor(m => m.Describtion, new { @class = "form-control input-lg", placeholder = "Opis firmy" })
+                                @Html.ValidationMessageFor(m => m.Describtion, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-group">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-9">
+                                <input type="submit" value="Dodaj firmę" class="btn btn-success btn-lg" style="width:100%;" />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            }
+
+            @*<div class="row">
+                    <div class="jumbotron">
+                        <form action="~/Company/SaveUploadedFile" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm" style="width: 50px; background: none; border: none;">
+                            <div class="fallback">
+                                <input name="file" type="file" multiple />
+                                <input type="submit" value="Upload" />
+                            </div>
+                        </form>
+                    </div>
+                </div>*@
+
+
+
+
+        }
+    </div>
+</div>

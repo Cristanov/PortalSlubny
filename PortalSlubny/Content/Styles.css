@@ -1,0 +1,539 @@
+﻿html {
+    height: 100%;
+    box-sizing: border-box;
+}
+
+body {
+    background-image: url('../Images/website_background__unimportan_by_jezby13.gif');
+    background-repeat: no-repeat;
+    background-size: 100% 600px;
+    background-attachment: fixed;
+    position: relative;
+    margin: 0;
+    min-height: 100%;
+    padding-top:0px;
+}
+
+#wrapper {
+    min-height: 100%;
+    position: relative;
+    margin: 0 auto;
+    padding-bottom:50px;
+}
+
+.white-section {
+    background-color: rgba(255,255,255,0.8);
+}
+
+.blue-section {
+    background-color: rgba(172, 211, 243, 0.8);
+}
+
+.first-section {
+    margin: -20px 0 0 0;
+}
+
+.cl {
+    clear: both;
+}
+
+.hidden {
+    display: none;
+}
+
+.small-social-img {
+    width: 30px;
+    height: 30px;
+}
+
+.social-media-icons {
+    padding: 10px;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 30px;
+    margin-top: 10px;
+}
+
+.recomm-element {
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+    -moz-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+    .recomm-element:hover {
+        box-shadow: 0px 0px 10px -5px blue;
+    }
+
+.circle {
+    height: 90px;
+    width: 90px;
+    border-radius: 50px;
+    margin: 10px auto 0 auto;
+    background-color: #EF4836;
+    text-align: center;
+}
+
+    .circle img {
+        height: 40px;
+        width: 40px;
+        margin: 22px 0 0 0;
+    }
+
+#companyBase {
+    margin: 0 0 0 0;
+    padding: 0 0 10px 0;
+}
+
+#companySearchDiv {
+    margin-top: 20px;
+}
+
+.tags {
+    margin: auto;
+    padding: 0;
+    list-style: none;
+}
+
+    .tags li, .tags a {
+        float: left;
+        height: 36px;
+        width: 150px;
+        line-height: 36px;
+        position: relative;
+        font-size: 16px;
+        margin: 5px 20px 0 5px;
+    }
+
+@media (min-width: 1200px) {
+    .tags li, .tags a {
+        width: 200px;
+    }
+}
+
+.tags a {
+    margin-left: 20px;
+    padding: 0 10px 0 12px;
+    background: #0089e0;
+    color: white;
+    text-decoration: none;
+    -moz-border-radius-bottomright: 4px;
+    -webkit-border-bottom-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    -moz-border-radius-topright: 4px;
+    -webkit-border-top-right-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+    .tags a:before {
+        content: "";
+        float: left;
+        position: absolute;
+        top: 0;
+        left: -18px;
+        width: 0;
+        height: 0;
+        border-color: transparent #0089e0 transparent transparent;
+        border-style: solid;
+        border-width: 18px 18px 18px 0;
+    }
+
+    .tags a:after {
+        content: "";
+        position: absolute;
+        top: 15px;
+        left: 0;
+        float: left;
+        width: 4px;
+        height: 4px;
+        -moz-border-radius: 2px;
+        -webkit-border-radius: 2px;
+        border-radius: 2px;
+        background: #fff;
+        -moz-box-shadow: -1px -1px 2px #004977;
+        -webkit-box-shadow: -1px -1px 2px #004977;
+        box-shadow: -1px -1px 2px #004977;
+    }
+
+    .tags a:hover {
+        background: #004977;
+        text-decoration: none;
+        color: white;
+    }
+
+        .tags a:hover:before {
+            border-color: transparent #004977 transparent transparent;
+        }
+
+/*ostatnio dodane firmy*/
+#lastAddedCompaniesColumn h3 {
+    text-align: center;
+}
+
+#lastAddedCompaniesSliderContainer {
+    height: 190px;
+    overflow: hidden;
+    box-shadow: -1px -1px 5px black;
+    max-width: 400px;
+    margin: auto;
+}
+
+#lastAddedCompanies {
+    position: relative;
+    height: 100%;
+}
+
+.lastAddedCompany {
+    float: left;
+    height: 100%;
+    cursor: pointer;
+}
+
+.lastAddedImgContainer {
+    width: 100%;
+    height: 100%;
+}
+
+.lastAddedCompany img {
+}
+
+.lastAddedCompany p {
+    position: relative;
+    text-align: center;
+    top: -30px;
+    font-size: 20px;
+    height: 30px;
+    background-color: black;
+    color: white;
+    opacity: 0.5;
+    width: 100%;
+}
+
+/*news*/
+
+.news {
+    transition: all 0.5s;
+    cursor: pointer;
+}
+
+    .news :hover {
+        box-shadow: 0px 0px 10px -2px black;
+    }
+
+    .news > img {
+        width: 100%;
+    }
+
+    .news > .news-title {
+        position: relative;
+        color: white;
+        background-color: black;
+        opacity: 0.5;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 5px 0 0 5px;
+    }
+
+/*contact*/
+
+.contact-name {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/*footer*/
+
+footer {
+    height:40px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 1rem;
+    background-color: #efefef;
+    text-align: center;
+}
+
+/*upload file button trick*/
+.fileUpload {
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
+}
+
+    .fileUpload input.upload {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        padding: 0;
+        font-size: 20px;
+        cursor: pointer;
+        opacity: 0;
+        filter: alpha(opacity=0);
+    }
+
+/*Show Company*/
+
+.company-description {
+    text-align: justify;
+}
+
+.removeButton {
+    width: 25px;
+    height: 25px;
+    padding-left: 4px;
+}
+
+    .removeButton:hover {
+        cursor: pointer;
+        box-shadow: red 0px 0px 5px -1px;
+    }
+
+.logo {
+    margin: 10px;
+    margin: auto;
+    box-shadow: black 0px 0px 10px -1px;
+    cursor: pointer;
+}
+
+#contactData {
+    border: white solid 1px;
+    padding: 5px;
+    margin: 10px;
+}
+
+.editIcon {
+    margin: 0 0 0 10px;
+}
+
+/*company Index*/
+
+/*button link to add company*/
+.right-panel-button {
+    position: fixed;
+    width: 220px;
+    height: 45px;
+    top: 20%;
+    left: 100%;
+    -ms-transform: rotate(90deg); /* IE 9 */
+    -ms-transform-origin: 0% 100%; /* IE 9 */
+    -webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
+    -webkit-transform-origin: 0% 100%; /* Chrome, Safari, Opera */
+    transform: rotate(90deg);
+    transform-origin: 0% 100%;
+    background-color: #ffd325;
+    cursor: pointer;
+    z-index: 1000;
+    font-size: 18px;
+    padding: 5px;
+    text-align: center;
+}
+
+    .right-panel-button a {
+        color: black;
+        display: table-cell;
+        vertical-align: middle;
+    }
+
+        .right-panel-button a:hover {
+            text-decoration: none;
+        }
+
+    .right-panel-button i {
+        display: table-cell;
+        vertical-align: middle;
+        padding-left: 20px;
+    }
+
+.transition-all1s {
+    -moz-transition: all 1s;
+    -o-transition: all 1s;
+    -webkit-transition: all 1s;
+    transition: all 1s;
+}
+
+#ratingDiv p {
+    margin: 0;
+}
+
+#ratingDiv div:first-child {
+    float: left;
+    margin: 0 10px 0 20px;
+}
+
+#ratingDiv div:first-child {
+    width: 160px;
+}
+
+.ratingDiv {
+    float: left;
+}
+
+/*company item*/
+.company-item-link {
+    color: black;
+}
+
+    .company-item-link:hover {
+        text-decoration: none;
+        color: black;
+    }
+
+.companyItem {
+    margin: 10px 0 0 0;
+    box-shadow: black 0px 0px 4px -3px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+    .companyItem:hover {
+        box-shadow: black 0px 0px 4px 0px;
+    }
+
+.company-item-img {
+}
+
+.companyItem-images-container {
+    height: 180px;
+    width: 100%;
+}
+
+.company-name {
+    font-size: 20px;
+    padding: 3px 3px 3px 10px;
+}
+
+.category-icon {
+    height: 25px;
+    width: 25px;
+    float: right;
+    margin: 3px;
+}
+
+.company-item-description {
+    font-size: smaller;
+    padding: 5px;
+    text-align: justify;
+    max-height: 200px;
+    overflow: hidden;
+}
+
+.companyItem-small-images {
+    background-color: blue;
+}
+
+.no-padding {
+    padding-left: 0px;
+}
+
+.company-item-rating {
+    padding: 5px;
+}
+
+.company-item-rating-stars {
+    float: left;
+    margin-right: 10px;
+}
+
+.company-item-rating-grade {
+    font-size: 16px;
+    font-weight: bolder;
+    padding: 1px 0 0 0;
+}
+
+/* Company Search Container */
+#companySearchContainer {
+    background-color: rgba(172, 211, 243, 0.8);
+    padding: 5px;
+}
+
+    #companySearchContainer .form-group {
+        margin-bottom: 4px;
+        margin-top: 4px;
+    }
+
+.search-button-container {
+    padding-right: 0px;
+}
+
+.clear-button-container {
+    padding-left: 0px;
+}
+
+#companySearchContainer button {
+    margin: 0px;
+    width: 100%;
+}
+
+#companySearchContainer .control-label {
+    padding-right: 0px;
+}
+
+.rotate90 {
+    -ms-transform: rotateX(180deg); /* IE 9 */
+    -webkit-transform: rotateX(180deg); /* Chrome, Safari, Opera */
+    transform: rotateX(180deg);
+}
+
+#advancedSearchIcon {
+    transition: all 0.5s;
+}
+
+/*Admin panel*/
+
+/*Admin index*/
+
+#adminMenu a {
+    color: black;
+}
+
+.admin-tab {
+    text-align: center;
+}
+
+    .admin-tab p {
+        vertical-align: middle;
+        font-size: 20px;
+        -moz-transition: all 0.5s;
+        -o-transition: all 0.5s;
+        -webkit-transition: all 0.5s;
+        transition: all 0.5s;
+    }
+
+    .admin-tab :hover {
+        -webkit-box-shadow: 0px 0px 12px 2px rgba(0,0,255,0.76);
+        -moz-box-shadow: 0px 0px 12px 2px rgba(0,0,255,0.76);
+        box-shadow: 0px 0px 12px 2px rgba(0,0,255,0.76);
+        cursor: pointer;
+    }
+
+.active-tab {
+    -webkit-box-shadow: 0px 0px 12px 2px rgba(0,0,0,0.76);
+    -moz-box-shadow: 0px 0px 12px 2px rgba(0,0,0,0.76);
+    box-shadow: 0px 0px 12px 2px rgba(0,0,0,0.76);
+}
+
+.admin-content {
+    margin: 10px 0 0 0;
+    background-color: white;
+}
+
+#add-category-button {
+    margin: 0px 5px 5px 15px;
+}
+
+/*Comments*/
+
+.comment {
+    border-bottom: solid 1px #4e4cff;
+}
+
+    .comment > .date {
+        font-size: 12px;
+    }

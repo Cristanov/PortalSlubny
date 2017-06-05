@@ -1,0 +1,49 @@
+﻿@using PortalSlubny.Models;
+@model Company
+
+<script>
+    $(function () {
+        var that = this;
+        var toolitup = $("#jRate_" + '@Model.Id').jRate({
+            rating: '@Model.Grade.ToString().Replace(',','.')',
+            strokeColor: 'black',
+            width: 20,
+            height: 20,
+            precision: 0.5,
+            readOnly: true,
+            onChange: function (rating) {
+                //console.log("OnChange: Rating: " + rating);
+                //alert('asd');
+            },
+            onSet: function (rating) {
+                $.getJSON("/Company/SetGrade?companyId=@Model.Id&grade=" + rating).done(function (data) {
+                    alert(data.ActualGrade);
+                })
+
+            }
+        });
+    });
+</script>
+
+<div class="companyItem">
+    <a href="@Url.Action("ShowCompany", "Company", new { id=@Model.Id })" class="company-item-link">
+        <span class="company-name">
+            @Html.DisplayFor(m => m.Name)
+            <img src="~/Images/google_plus.png" class="category-icon" />
+        </span>
+        <div class="cl"></div>
+
+        <div class="companyItem-images-container fill-container">
+            <img src="@Model.Logo" />
+        </div>
+        <div class="company-item-description">
+            <p>@Html.Raw(HttpUtility.HtmlDecode(@Model.Describtion))</p>
+        </div>
+        <div class="cl"></div>
+
+        <div id="jRate_@Model.Id" style="height:25px;width: 105px; float:left; margin:0 0 5px 10px"></div>
+        <p>@Model.Grade.ToString("0.0").Replace(',','.')</p>
+        <div class="cl"></div>
+    </a>
+
+</div>

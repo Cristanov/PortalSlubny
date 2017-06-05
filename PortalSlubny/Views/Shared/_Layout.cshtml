@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/myCss")
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+</head>
+<body>
+    <div id="wrapper">
+        <header id="homeHeader">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container">
+                    <!-- Grupowanie "marki" i przycisku rozwijania mobilnego menu -->
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                            <span class="sr-only">Rozwiń nawigację</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        @Html.ActionLink("GÓRALSKI ŚLUB", "Index", "Home", null, new { @class = "navbar-brand" })
+                    </div>
+
+                    <!-- Grupowanie elementów menu w celu lepszego wyświetlania na urządzeniach moblinych -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="#">Home</a></li>
+                            <li>@Html.ActionLink("Baza Firm", "Index", "Company")</li>
+                            <li><a href="#">O Nas</a></li>
+                            <li><a href="#">Porady</a></li>
+                            <li><a href="#">Kontakt</a></li>
+                            @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                            {
+                                <li>@Html.ActionLink("Admin Panel", "Index", "Admin")</li>
+                            }
+                        </ul>
+
+                        <ul class="navbar-nav navbar-right social-media-icons">
+
+                            <li>
+                                <a href="#"><img class="small-social-img" src="~/Images/facebook.png" /></a>
+                                <a href="#"><img class="small-social-img" src="~/Images/twitter.png" /></a>
+                                <a href="#"><img class="small-social-img" src="~/Images/google_plus.png" /></a>
+                            </li>
+                            @*<li><a href="#"><img class="small-social-img" src="~/Images/twitter.png" /></a></li>*@
+                            @*<li><a href="#"><img class="small-social-img" src="~/Images/google_plus.png" /></a></li>*@
+                        </ul>
+                        @Html.Partial("_LoginPartial")
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
+        </header>
+
+        <section id="mainContent">
+            @RenderBody()
+        </section>
+        @*<div class="clear"></div>*@
+
+        
+    </div>
+    <footer>
+        <div class="container-fluid">
+            <div class="container">
+                <div id="copyrights">
+                    2015 Utworzone przez Marcin Włodarz
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/myScripts")
+    @Scripts.Render("~/bundles/dropzone")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,150 @@
+﻿@model PortalSlubny.ViewModels.CompanyIndexViewModel
+@using PortalSlubny.Models
+@using PagedList.Mvc
+
+@{
+    ViewBag.Title = "Baza Firm";
+    List<Company> firstColumn = new List<Company>();
+    List<Company> secondColumn = new List<Company>();
+    List<Company> thirdColumn = new List<Company>();
+
+    int i = 2;
+    foreach (Company item in Model.Companies)
+    {
+        if (i == 1)
+        {
+            firstColumn.Add(item);
+        }
+        if (i == 2)
+        {
+            secondColumn.Add(item);
+        }
+        if (i == 3)
+        {
+            thirdColumn.Add(item);
+        }
+        i++;
+        if (i > 3)
+        {
+            i = 1;
+        }
+    }
+}
+
+@Scripts.Render("~/bundles/jquery")
+
+<script type="text/javascript" src="~/Scripts/fillImage/fillImage.js"></script>
+<script type="text/javascript" src="~/Scripts/rightPanel.js"></script>
+<link rel="stylesheet" href="~/Scripts/fillImage/fillImage.css" />
+
+<script>
+    // Ustawia pola wyszukiwania do wartości domyślnych
+    function ClearSearchElements() {
+        document.getElementById("search").value = "";
+        document.getElementById("Categories").value = "";
+        document.getElementById("Places").value = "";
+        document.getElementById("Sort").value = "Name";
+    }
+
+</script>
+
+
+<div class="right-panel-button">
+    @Html.ActionLink("Dodaj swoją firmę", "Add")
+    <i class="fa fa-times fa-2x" id="right-panel-cross"></i>
+</div>
+
+<div class="container-fluid white-section">
+    <div class="container">
+        <h2 class="section-title">@ViewBag.Title</h2>
+        <div class="row">
+            <div class="col-md-4 col-sm-4">
+
+                <div id="companySearchContainer">
+                    @using (@Html.BeginForm("Index", "Company", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        //wyszukiwarka firm
+                        <div class="form-group">
+                            @Html.Label("Szukaj:", new { @class = "col-md-3 control-label right" })
+                            <div class="col-md-9">
+                                @Html.TextBox("search", null, new { @class = "form-control input-sm", placeholder = "Szukaj firmy" })
+                            </div>
+                            @*<div class="col-xs-1 show-button-container" id="showButton">
+                                    <i class="fa fa-arrow-circle-down fa-2x" id="advancedSearchIcon"></i>
+                                </div>*@
+                        </div>
+                        <div id="advancedSearchContainer">
+                            @*kategoria*@
+                            <div class="form-group">
+                                @Html.Label("Kategoria:", new { @class = "col-md-3 control-label" })
+                                <div class="col-md-9">
+                                    @Html.DropDownList("Categories", Model.Categories, "Wszystkie kategorie", new { @class = "form-control input-sm" })
+                                </div>
+                            </div>
+                            @*miejscowość*@
+                            <div class="form-group">
+                                @Html.Label("Miejscowość:", new { @class = "col-md-3 control-label" })
+                                <div class="col-md-9">
+                                    @Html.DropDownList("Places", Model.Places, "Wszystkie miejscowości", new { @class = "form-control input-sm" })
+                                </div>
+                            </div>
+                            @*sortowanie*@
+                            <div class="form-group">
+                                @Html.Label("Sortuj:", new { @class = "col-md-3 control-label" })
+                                <div class="col-md-9">
+                                    @Html.DropDownList("Sort", Model.SortList, new { @class = "form-control input-sm" })
+                                </div>
+                            </div>
+
+                            @*button*@
+                            <div class="row">
+                                <div class="col-xs-10 search-button-container">
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        <i class="fa fa-search"></i>
+                                        Szukaj
+                                    </button>
+                                </div>
+
+                                <div class="col-xs-2 clear-button-container">
+                                    <button type="button" class="btn btn-warning btn-sm" onclick="ClearSearchElements();">
+                                        <i class="fa fa-delete">X</i>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+                </div>
+
+                @foreach (Company item in firstColumn)
+                {
+                    @Html.Partial("_CompanyItemPartial", item)
+                }
+            </div>
+
+            <div class="col-md-4 col-sm-4">
+
+                @foreach (Company item in secondColumn)
+                {
+                    @Html.Partial("_CompanyItemPartial", item)
+                }
+            </div>
+
+            <div class="col-md-4 col-sm-4">
+
+                @foreach (Company item in thirdColumn)
+                {
+                    @Html.Partial("_CompanyItemPartial", item)
+                }
+
+            </div>
+        </div>
+
+        <div class="row">
+            @if (Model.Companies.PageCount > 1)
+            {
+                @Html.PagedListPager(Model.Companies, page => Url.Action("Index", new { page, Sort = ViewBag.Sort, Places = ViewBag.CurrentPlace, Categories = ViewBag.CurrentCategory, Search = ViewBag.Search }))
+            }
+        </div>
+    </div>
+</div>

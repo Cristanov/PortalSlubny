@@ -1,0 +1,54 @@
+﻿@model PortalSlubny.Models.ChangeEmailViewModel
+@{
+    ViewBag.Title = "Zmiana e-mail";
+}
+
+
+<div class="container-fluid white-section" id="recommended">
+    <div class="container">
+        <section>
+            <h1 class="section-title">@ViewBag.Title</h1>
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+                    @using (Html.BeginForm("ChangeEmail", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <hr />
+                        
+                        @Html.HiddenFor(m => m.OldEmail);
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.OldEmailConfirm, new { @class = "col-md-5 control-label" })
+                            <div class="col-md-7">
+                                @Html.TextBoxFor(m => m.OldEmailConfirm, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.OldEmailConfirm, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.NewEmail, new { @class = "col-md-5 control-label" })
+                            <div class="col-md-7">
+                                @Html.TextBoxFor(m => m.NewEmail, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.NewEmail, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.ConfirmNewEmail, new { @class = "col-md-5 control-label" })
+                            <div class="col-md-7">
+                                @Html.TextBoxFor(m => m.ConfirmNewEmail, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.ConfirmNewEmail, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Zmień email" class="btn btn-default" />
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+

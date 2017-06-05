@@ -1,0 +1,333 @@
+﻿@model PortalSlubny.ViewModels.ShowCompanyViewModel
+@using Recaptcha.Web.Mvc;
+@using PortalSlubny.Models
+
+@{
+    ViewBag.Title = "Góralski Ślub: " + Model.Company.Name;
+    List<Image> images = Model.Company.Images.Where(x => !x.IsLogo).ToList();
+}
+
+<link href="~/Scripts/galerySlider/font-awesome.min.css" rel="stylesheet">
+<script type="text/javascript" src="~/Scripts/galerySlider/slide.js"></script>
+@* przerobić na lokalne *@
+<script type="text/javascript" src="~/Scripts/Tools.js"></script>
+@section Scripts
+{
+    <script type="text/javascript">
+        var viewer = new PhotoViewer();
+        var imagesList = @Html.Raw(Json.Encode(@images));
+
+        for (var i = 0; i < imagesList.length; i++) {
+            viewer.add(imagesList[i].Path);
+        }
+
+        function PrepareImages() {
+            
+            for (var i = 0; i < imagesList.length; i++) {
+                var imageDiv = document.getElementById("imageDiv_" + i);
+                var img = document.getElementById("image_" + i);
+                ScaleImageToContainer(img, imageDiv);
+                CenterImageInContainer(img, imageDiv);
+            }
+        }
+
+        function ScrollDown() {
+            window.scrollTo(0,document.body.scrollHeight);
+        }
+
+        /////
+        $(document).ready(function () {
+            PrepareImages();
+
+            // tooltip dla buttona do dodawania zdjęć
+            $("#addFilesBtn").tooltip({
+                'delay': { show: 500, hide: 1000 }
+            });
+
+            // pokazywanie wartości oceny po najechaniu myszką
+            $("#jRateAvg").mouseover(function (){
+                var avgValue = $("#jRateAvgValue");
+                //avgValue.text('@Model.Company.Grade.ToString().Replace(',', '.')');
+                avgValue.text(toolitup.getRating());
+            });
+            $("#jRateAvg").mouseleave(function(){
+                $("#jRateAvgValue").text("");
+            });
+            $("#jRateUser").mouseleave(function () {
+                $("#jRateUserValue").text("");
+            })
+
+            // przewinięcie strony do ostatniego komentarza.
+            if ('@Model.ScrollDown' == 'True') {
+                ScrollDown();
+            }
+        });
+
+        $("#addFilesBtn").click(function () {
+            $('input[type="file"]').click();
+        });
+
+        Dropzone.options.dropzoneForm = {
+            acceptedFiles: "image/*",
+            init: function () {
+                var thisDropzone = this;
+
+                $.getJSON("/Company/GetAttachments/?companyName=@Model.Company.Name").done(function (data) {
+                    if (data.Data != '') {
+
+                        $.each(data.Data, function (index, item) {
+                           
+                            var mockFile = {
+                                name: item.Title,
+                                size: item.Bytes,
+                                id: item.Id
+                            };
+
+                            thisDropzone.emit("addedfile", mockFile);
+
+                            thisDropzone.emit("thumbnail", mockFile, item.Path);
+                        });
+                    }
+                });
+                this.on("addedfile", function (file) {
+
+                    var removeButton = Dropzone.createElement("<button type=\"button\" class=\"removeButton btn btn-default btn-xs\" ><i class=\"glyphicon glyphicon-remove \"></i></button>");
+                    var _this = this;
+
+                    removeButton.addEventListener("click", function (e) {
+                     
+                        e.preventDefault();
+                        e.stopPropagation();
+                        
+                        _this.removeFile(file);
+                        
+                        $.ajax({
+                            url: "/Company/DeleteFile",
+                            type: "POST",
+                            data: { "fileName": file.id}
+                        });
+                    });
+
+                    file.previewElement.appendChild(removeButton);
+                });
+            }
+        };
+
+        var toolitup;
+        // rating
+        $(function () {
+            var that = this;
+            toolitup = $("#jRateAvg").jRate({
+                rating: '@Model.Company.Grade.ToString().Replace(',', '.')',
+                strokeColor: 'black',
+                width: 20,
+                height: 20,
+                readOnly: true,
+            });
+
+            var toolitup2 = $("#jRateUser").jRate({
+
+                rating: @Model.UserGrade.ToString().Replace(',', '.'),
+                strokeColor: 'black',
+                width: 20,
+                height: 20,
+                precision: 0.5,
+                readOnly: false,
+                onChange: function (rating) {
+                    $("#jRateUserValue").text(rating);
+                },
+                onSet: function (rating) {
+                    $.getJSON("/Company/SetGrade?companyId=@Model.Company.Id&value=" + rating).done(function(data){
+
+                        if (data.Message) {
+                            alert(data.Message);
+                        }
+                        else {
+                            toolitup.setRating(data.ActualGrade);
+                        }
+                    })
+                }
+            });
+        });
+
+    </script>
+}
+
+<div class="container-fluid blue-section">
+    <div class="container">
+        <h2>@Html.DisplayFor(m => m.Company.Name)</h2>
+
+        <h4>
+            Kategoria: @Html.DisplayFor(m => m.Company.Category.Name)
+            @if ((Request.IsAuthenticated && User.Identity.Name == Model.Company.Owner.UserName) || User.IsInRole("Admin"))
+            {
+                <a class="editIcon" href="@Url.Action("EditCompany", "Company", new { id = Model.Company.Id })"><i class="fa fa-cog"></i></a>
+            }
+        </h4>
+        <hr />
+
+        <div class="row">
+            <div class="col-md-4">
+
+                <img id="imageLogo" src="@Model.Company.Logo" class="img-responsive logo" />
+
+                <div id="contactData">
+                    <h4>Dane kontaktowe </h4>
+                    <dl class="dl-horizontal">
+                        <dt>@Html.DisplayNameFor(m => m.Company.Place)</dt>
+                        <dd>@Html.DisplayFor(m => m.Company.Place)</dd>
+                        <dt>@Html.DisplayNameFor(m => m.Company.Phone1)</dt>
+                        <dd>@Html.DisplayFor(m => m.Company.Phone1)</dd>
+                        <dt>@Html.DisplayNameFor(m => m.Company.Phone2)</dt>
+                        <dd>@Html.DisplayFor(m => m.Company.Phone2)</dd>
+                        <dt>@Html.DisplayNameFor(m => m.Company.Email)</dt>
+                        <dd>@Html.DisplayFor(m => m.Company.Email)</dd>
+                        <dt>@Html.DisplayNameFor(m => m.Company.WWW)</dt>
+                        <dd>@Html.DisplayFor(m => m.Company.WWW)</dd>
+                    </dl>
+
+                </div>
+                <div id="ratingDiv">
+                    <div>
+                        <p>Ocena ogólna</p>
+                        <div id="jRateAvg" class="ratingDiv"></div>
+                        <p class="rateNumber" id="jRateAvgValue"></p>
+                    </div>
+                    @if (Request.IsAuthenticated)
+                    {
+                        <div>
+                            <p>Twoja ocena</p>
+                            <div id="jRateUser" class="ratingDiv"></div>
+                            <p class="rateNumber" id="jRateUserValue"></p>
+                        </div>
+                    }
+                    <div class="cl"></div>
+                </div>
+
+            </div>
+            <div class="col-md-8 company-description" id="companyDescription">
+                @Html.Raw(HttpUtility.HtmlDecode(@Model.Company.Describtion))
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Galery *@
+@if (images.Count > 0)
+{
+    <div class="container-fluid white-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Galeria</h3>
+                    <div class="jumbotron">
+
+
+                        @for (int i = 0; i < images.Count; i++)
+                        {
+                            string imagePath = images[i].Path;
+                            <div style="height:190px; width:190px; float:left; margin:5px;" id="imageDiv_@i">
+                                <img class="img-thumbnail" src="@imagePath" onclick="javascript: void (viewer.show(@i))" id="image_@i" />
+                            </div>
+                        }
+                        <div class="cl"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (Request.IsAuthenticated && User.Identity.Name == Model.Company.Owner.UserName)
+{
+    <div class="row">
+        <div class="container-fluid blue-section">
+            <section class="col-md-12 container">
+                <h3>Zarządzanie zdjęciami</h3>
+
+                <div class="jumbotron">
+                    <a id="addFilesBtn" class="btn btn-success btn-lg tip-top" data-toggle="tooltip" data-original-title="Możesz również przeciągnąć zdjęcia na panel poniżej">
+                        <i class="glyphicon glyphicon-plus-sign pull-left" style="margin-right:5px;"></i>Dodaj zdjęcia
+                    </a>
+
+                    <form action="~/Company/SaveUploadedFile/?companyName=@Model.Company.Name" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
+                        <div class="fallback">
+                            <input id="fileInput" name="file" type="file" multiple />
+                            <input type="submit" value="Upload" />
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </div>
+}
+
+<div class="row">
+    <div class="container-fluid white-section">
+        <section class="col-md-12 container">
+            <h3>Komentarze</h3>
+            <hr />
+
+            <div id="newCommentForm">
+                @using (Html.BeginForm("AddComment", "Company", FormMethod.Post, new { @class = "form-horizontal" }))
+                {
+                    @Html.HiddenFor(m => m.Company.Id)
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.NewComment.UserName, "Autor", new { @class = "control-label input-lg col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.TextBoxFor(m => m.NewComment.UserName, new { @class = "form-control input-lg", placeholder = "Autor" })
+                                    @Html.ValidationMessageFor(m => m.NewComment.UserName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.NewComment.AuthorEmail, new { @class = "control-label input-lg col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.TextBoxFor(m => m.NewComment.AuthorEmail, new { @class = "form-control input-lg", placeholder = "Email" })
+                                    @Html.ValidationMessageFor(m => m.NewComment.AuthorEmail, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.NewComment.Text, "Treść", new { @class = "control-label input-lg col-md-3" })
+                                <div class="col-md-9">
+                                    @Html.TextAreaFor(m => m.NewComment.Text, new { @class = "form-control input-lg", placeholder = "Wpisz treść" })
+                                    @Html.ValidationMessageFor(m => m.NewComment.Text, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-3">
+                                    @Html.Recaptcha(theme: Recaptcha.Web.RecaptchaTheme.Clean)
+                                    @Html.ValidationMessage("Recaptcha", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-9">
+                                    <input type="submit" value="Dodaj komentarz" class="btn btn-success btn-lg" style="width:100%;" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            </div>
+
+            <hr />
+
+            @foreach (var item in Model.Company.Comments)
+            {
+                <div class="comment">
+                    <h4>@item.UserName</h4>
+                    <p class="commentText">@item.Text</p>
+                    <span class="date">Dodano: @item.Date</span>
+                </div>
+            }
+
+        </section>
+    </div>
+</div>

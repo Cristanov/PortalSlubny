@@ -1,0 +1,12 @@
+﻿.fill-container {
+    width: 100%;
+    /*height: 300px;*/
+    /*jak nie ustawione height to się jebie*/
+    
+    margin: auto;
+    overflow: hidden;
+}
+
+    .fill-container img {
+        position: relative;
+    }

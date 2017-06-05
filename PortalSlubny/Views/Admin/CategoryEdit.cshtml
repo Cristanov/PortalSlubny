@@ -1,0 +1,45 @@
+﻿@model PortalSlubny.Models.Category
+
+@{
+    ViewBag.Title = "CategoryEdit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Partial("_AdminMenu")
+
+<div class="container-fluid white-section">
+    <div class="container">
+        <section>
+            <div class="row">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+                        <h4>Edytuj kategorie</h4>
+                        <hr />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.Id)
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Zapisz" class="btn btn-success" />
+                                @Html.ActionLink("Powrót", "Categories", null, new { @class = "btn btn-warning" })
+                            </div>
+                        </div>
+
+
+                    </div>
+                }
+            </div>
+        </section>
+    </div>
+</div>

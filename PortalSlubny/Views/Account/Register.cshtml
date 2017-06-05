@@ -1,0 +1,15 @@
+﻿@model PortalSlubny.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Rejestracja";
+}
+
+<div class="container-fluid white-section">
+    <div class="container">
+        <h2 class="section-title">@ViewBag.Title</h2>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+                @Html.Partial("_RegisterFormPartial")
+            </div>
+        </div>
+    </div>
+</div>
